@@ -27,3 +27,7 @@ def preprocess(file_path):
     raw_text = load_text(file_path)
     clean_text_data = clean_text(raw_text)
     return tokenize(clean_text_data)
+
+def n_gram_split(tokens, n=3):
+    """ 生成 n-gram 片段 """
+    return {"".join(tokens[i:i+n]) for i in range(len(tokens)-n+1)}

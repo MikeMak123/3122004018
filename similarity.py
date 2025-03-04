@@ -32,7 +32,7 @@ def cosine_similarity(vec1, vec2):
     magnitude2 = math.sqrt(sum(val ** 2 for val in vec2.values()))
     return dot_product / (magnitude1 * magnitude2) if magnitude1 and magnitude2 else 0
 
-def compute_similarity(text1, text2, method="levenshtein"):
+def compute_similarity(text1, text2, method="jaccard"):
     """ 计算相似度，默认使用 Levenshtein """
     if method == "levenshtein":
         max_len = max(len(text1), len(text2))
