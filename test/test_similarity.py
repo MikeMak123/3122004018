@@ -2,7 +2,6 @@ import unittest
 from preprocess import n_gram_split
 from similarity import levenshtein_distance, jaccard_similarity, cosine_similarity, compute_similarity 
 
-
 class TestSimilarity(unittest.TestCase):
     def test_n_gram(self):
         tokens = ["今天", "天气", "晴朗"]
