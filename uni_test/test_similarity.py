@@ -1,3 +1,9 @@
+import sys
+import os
+
+# 识别项目根目录下的模块
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import unittest
 from preprocess import n_gram_split
 from similarity import levenshtein_distance, jaccard_similarity, cosine_similarity, compute_similarity 

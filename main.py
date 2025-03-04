@@ -1,14 +1,24 @@
 from preprocess import preprocess
 from similarity import compute_similarity
 from utils import parse_args, write_result, get_local_path
+import sys
+
+def parse_args():
+    """ 解析命令行参数 """
+    if len(sys.argv) != 4:
+        print("用法: python main.py [原文文件] [抄袭版论文] [答案文件]")
+        exit(1)
+    return sys.argv[1], sys.argv[2], sys.argv[3]
 
 if __name__ == "__main__":
-    # orig_file, plagiarized_file, output_file = parse_args()
+    orig_file, plagiarized_file, output_file = parse_args()
+
+    # 运行命令： python main.py 'test_data\orig.txt' 'test_data\orig_add.txt' 'test_data\ans.txt' 
 
     # 论文文件名（假设默认文件名）
-    orig_file = get_local_path("orig.txt")
-    plagiarized_file = get_local_path("orig_add.txt")
-    output_file = get_local_path("ans.txt")
+    # orig_file = get_local_path(r"test_data\orig.txt")
+    # plagiarized_file = get_local_path(r"test_data\orig_add.txt")
+    # output_file = get_local_path(r"test_data\ans.txt")
 
     # 预处理
     orig_tokens = preprocess(orig_file)
