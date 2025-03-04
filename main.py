@@ -3,6 +3,7 @@ from similarity import compute_similarity
 from utils import parse_args, write_result, get_local_path
 import sys
 
+print('\n', r"快速开始: 执行此命令以运行程序： python main.py 'test_data\orig.txt' 'test_data\orig_add.txt' 'test_data\ans.txt'" ,'\n')
 
 def parse_args():
     """ 解析命令行参数 """

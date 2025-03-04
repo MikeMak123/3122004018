@@ -5,8 +5,9 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import unittest
-from preprocess import n_gram_split
+from preprocess import n_gram_split, n_gram_split
 from similarity import levenshtein_distance, jaccard_similarity, cosine_similarity, compute_similarity 
+from collections import Counter
 
 class TestSimilarity(unittest.TestCase):
     def test_n_gram(self):
@@ -49,6 +50,7 @@ class TestSimilarity(unittest.TestCase):
         
         # 测试异常输入
         self.assertRaises(ValueError, compute_similarity, set1, set2, "invalid_method")  # 错误方法名
+    
 
 if __name__ == "__main__":
     unittest.main()
