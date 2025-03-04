@@ -3,6 +3,7 @@ from similarity import compute_similarity
 from utils import parse_args, write_result, get_local_path
 import sys
 
+
 def parse_args():
     """ 解析命令行参数 """
     if len(sys.argv) != 4:
@@ -10,7 +11,8 @@ def parse_args():
         exit(1)
     return sys.argv[1], sys.argv[2], sys.argv[3]
 
-if __name__ == "__main__":
+
+def main():
     orig_file, plagiarized_file, output_file = parse_args()
 
     # 运行命令： python main.py 'test_data\orig.txt' 'test_data\orig_add.txt' 'test_data\ans.txt' 
@@ -37,3 +39,6 @@ if __name__ == "__main__":
     print(f"jaccard相似度计算完成: {similarity_score_1:.2f}")
     print(f"levenshtein相似度计算完成: {similarity_score_2:.2f}")
     print(f"cosine相似度计算完成: {similarity_score_3:.2f}")
+
+if __name__ == "__main__":
+    main()

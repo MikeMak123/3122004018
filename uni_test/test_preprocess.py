@@ -14,13 +14,17 @@ class TestPreprocess(unittest.TestCase):
         self.assertEqual(clean_text("你好，世界！"), "你好世界")  # 中文符号清除
         self.assertEqual(clean_text("   多个    空格  "), "多个 空格")  # 多空格处理
         self.assertEqual(clean_text(""), "")  # 处理空字符串
+        self.assertEqual(clean_text("Email: abc@xyz.com"), "email abcxyzcom")  # 去除特殊符号
+        self.assertEqual(clean_text("@#￥%……&*"), "")  # 仅有特殊字符，变为空
+        self.assertEqual(clean_text("C++ 是很棒的语言！"), "c 是很棒的语言")  # 处理 `+`
     
     def test_tokenize(self):
         self.assertEqual(tokenize("今天是星期天"), ["今天", "是", "星期天"])
-        self.assertEqual(tokenize("Python3 是很棒的语言"), ["Python3", "是", "很棒", "的", "语言"])
+        self.assertEqual(tokenize("Python3 是很棒的语言"), ["python3", "是", "很棒", "的", "语言"])
         self.assertEqual(tokenize(" "), [])  # 处理纯空格输入
         self.assertEqual(tokenize(""), [])  # 处理空字符串
-        self.assertEqual(tokenize("Python 语言"), ["Python", "语言"])  # 确保去掉中间空格
+        self.assertEqual(tokenize("Python 语言"), ["python", "语言"])  # 确保去掉中间空格
+        self.assertEqual(tokenize("Hello WORLD"), ["hello", "world"])  # 统一英文大小写
     
     def test_n_gram_split(self):
         tokens = ["今天", "天气", "晴朗"]
