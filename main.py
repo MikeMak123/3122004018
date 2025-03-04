@@ -29,7 +29,7 @@ def main():
     # 计算相似度
     similarity_score_1 = compute_similarity(orig_tokens, plagiarized_tokens, method="jaccard")
     similarity_score_2 = compute_similarity(orig_tokens, plagiarized_tokens, method="levenshtein")
-    similarity_score_3 = compute_similarity(orig_tokens, plagiarized_tokens, method="cosine")
+    similarity_score_3 = compute_similarity(orig_tokens, plagiarized_tokens, method="cosine") 
 
     # 输出结果
     write_result(output_file, similarity_score_1)
@@ -38,7 +38,9 @@ def main():
 
     print(f"jaccard相似度计算完成: {similarity_score_1:.2f}")
     print(f"levenshtein相似度计算完成: {similarity_score_2:.2f}")
-    print(f"cosine相似度计算完成: {similarity_score_3:.2f}")
-
+    print(f"cosine相似度计算完成: {similarity_score_3:.2f}") 
+    print("\n", end=" ")
+    print(f"最终结果为综合相似度: {(similarity_score_1 + similarity_score_2 + similarity_score_3)/3:.2f}")  
+    
 if __name__ == "__main__":
     main()
