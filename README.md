@@ -194,7 +194,7 @@ Tue Mar  4 21:29:24 2025    profile_results.prof
 - **总时间**：0.906 秒。
 - **主要瓶颈**：
   - `subprocess.py` 相关函数占主导（0.900 秒，99% 时间），尤其是 `_winapi.WaitForSingleObject`（0.900 秒）。
-  - 这表明性能瓶颈不在 `similarity.py` 的计算模块，而是测试中的 `subprocess.run` 调用（可能用于运行 `main.py`）。
+  - 这表明性能瓶颈不在 `similarity.py` 的计算模块，而是测试中的 `subprocess.run` 调用。
 
 ##### 问题
 - 当前数据未直接反映 `similarity.py` 的性能（如 `levenshtein_distance`、`jaccard_similarity`、`cosine_similarity`）。
@@ -248,11 +248,6 @@ Tue Mar  4 21:29:24 2025    profile_results.prof
 #### 6. 结论
 - **改进效果**：总时间从 2.4 秒降至 1.3 秒，提升约 33.3%。
 - **关键思路**：空间优化（Levenshtein）、缓存（Cosine）、移除测试开销。
-- **后续建议**：
-  - 使用 `numpy` 加速 Cosine（需确认作业允许）。
-  - 对大文本分块处理 Levenshtein。
-
-
 
 
 ### **模块部分单元测试展示**
