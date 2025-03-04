@@ -10,37 +10,57 @@ import subprocess
 from main import preprocess, compute_similarity, write_result
 
 class TestMain(unittest.TestCase):
-    def test_end_to_end(self):
-        # 创建测试论文
-        orig_content = "今天是星期天，天气晴，今天晚上我要去看电影。"
-        plagiarized_content = "今天是周天，天气晴朗，我晚上要去看电影。"
+    def setUp(self):
+        """ 创建测试论文 """
+        self.orig_file = "orig_test.txt"
+        self.plagiarized_file = "plagiarized_test.txt"
+        self.output_file = "ans_test.txt"
 
-        with open(r"orig_test.txt", "w", encoding="utf-8") as f:
-            f.write(orig_content)
+        with open(self.orig_file, "w", encoding="utf-8") as f:
+            f.write("今天是星期天，天气晴，今天晚上我要去看电影。")
 
-        with open(r"plagiarized_test.txt", "w", encoding="utf-8") as f:
-            f.write(plagiarized_content)
+        with open(self.plagiarized_file, "w", encoding="utf-8") as f:
+            f.write("今天是周天，天气晴朗，我晚上要去看电影。")
 
-        output_file = r"ans_test.txt"
+    def tearDown(self):
+        """ 清理测试文件 """
+        os.remove(self.orig_file)
+        os.remove(self.plagiarized_file)
+        os.remove(self.output_file)
 
-        # 运行 main.py
+    def test_main_cli(self):
+        """ 测试正常文件 """
         result = subprocess.run(
-            ["python", "main.py", "orig_test.txt", "plagiarized_test.txt", output_file],
+            ["python", "main.py", self.orig_file, self.plagiarized_file, self.output_file],
             capture_output=True,
             text=True
         )
 
-        # 读取结果并检查
-        with open(output_file, "r", encoding="utf-8") as f:
+        # 读取结果
+        with open(self.output_file, "r", encoding="utf-8") as f:
             result_value = float(f.read().strip())
 
         self.assertGreaterEqual(result_value, 0.0)
         self.assertLessEqual(result_value, 1.0)
 
-        # 清理测试文件
-        os.remove("orig_test.txt")
-        os.remove("plagiarized_test.txt")
-        os.remove(output_file)
+    def test_main_empty_files(self):
+        """ 测试空文件 """
+        with open(self.orig_file, "w", encoding="utf-8") as f:
+            f.write("")
+
+        with open(self.plagiarized_file, "w", encoding="utf-8") as f:
+            f.write("")
+
+        result = subprocess.run(
+            ["python", "main.py", self.orig_file, self.plagiarized_file, self.output_file],
+            capture_output=True,
+            text=True
+        )
+
+        with open(self.output_file, "r", encoding="utf-8") as f:
+            result_value = float(f.read().strip())
+
+        self.assertEqual(result_value, 0.0)  # 空文件相似度应为 0
 
 if __name__ == "__main__":
     unittest.main()

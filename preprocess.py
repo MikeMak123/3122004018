@@ -16,11 +16,12 @@ def load_text(file_path):
 def clean_text(text):
     """ 清洗文本，去除标点符号，转为小写 """
     text = re.sub(r'[^\w\s]', '', text)  # 仅保留文字和空格
+    text = re.sub(r'\s+', ' ', text).strip()  # 替换多个空格为单个空格，并去掉首尾空格
     return text.lower()
 
 def tokenize(text):
-    """ 进行分词 """
-    return list(jieba.cut(text))
+    """ 分词，去除空格 """
+    return [word for word in jieba.cut(text) if word.strip()]
 
 def preprocess(file_path):
     """ 预处理文本：读取 -> 清洗 -> 分词 """
