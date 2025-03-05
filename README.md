@@ -6,25 +6,26 @@
 ---
 
 ## PSP2.1
+---
 
 | PSP2.1                                    | Personal Software Process Stages | 预估耗时（分钟） | 实际耗时（分钟） |
 |:------------------------------------------|:---------------------------------|:--------:|:--------:|
-| **Planning**                              | 计划                               |          |          |
-| · _Estimate_                              | 估计这个任务需要多少时间                     |    300    |          |
-| **Development**                           | 开发                               |          |          |
-| · _Analysis_                              | 需求分析 (包括学习新技术)                   |   100    |          |
-| · _Design Spec_                           | 生成设计文档                           |        |          |
-| · _Design Review_                         | 设计复审                             |        |          |
-| · _Coding Standard_                       | 代码规范 (为目前的开发制定合适的规范)             |        |          |
-| · _Design_                                | 具体设计                             |   120    |          |
-| · _Coding_                                | 具体编码                             |   120    |          |
-| · _Code Review_                           | 代码复审                             |    60    |          |
-| · _Test_                                  | 测试（自我测试，修改代码，提交修改）               |   180    |          |
-| **Reporting**                             | 报告                               |          |          |
-| · _Test Report_                           | 测试报告                             |    90    |          |
-| · _Size Measurement_                      | 计算工作量                            |    30    |          |
-| · _Postmortem & Process Improvement Plan_ | 事后总结, 并提出过程改进计划                  |    60    |          | 
-| **Total**                                 | 合计                               |          |          |
+| **Planning**                              | 计划                               |    30    |    45    |
+| · _Estimate_                              | 估计这个任务需要多少时间                     |   30    |    45    |
+| **Development**                           | 开发                               |   250    |   320    |
+| · _Analysis_                              | 需求分析 (包括学习新技术)                   |   20    |    60    |
+| · _Design Spec_                           | 生成设计文档                           |   40    |   120    |
+| · _Design Review_                         | 设计复审                             |   30    |    30    |
+| · _Coding Standard_                       | 代码规范 (为目前的开发制定合适的规范)             |   10    |    10    |
+| · _Design_                                | 具体设计                             |   30    |    30    |
+| · _Coding_                                | 具体编码                             |  120    |   90    |
+| · _Code Review_                           | 代码复审                             |   30    |    40    |
+| · _Test_                                  | 测试（自我测试，修改代码，提交修改）               |   60    |   150    |
+| **Reporting**                             | 报告                               |   80    |   285    |
+| · _Test Report_                           | 测试报告                             |   30    |   120    |
+| · _Size Measurement_                      | 计算工作量                            |   20    |    40    |
+| · _Postmortem & Process Improvement Plan_ | 事后总结, 并提出过程改进计划                  |   30    |   125    |
+| **Total**                                 | 合计                               | **360（6小时）** | **660（11小时）** |
 
 ---   
 ## **程序说明**
@@ -112,7 +113,7 @@
 
 ##### 独到之处
 - **统一接口**：`compute_similarity` 通过 `method` 参数灵活切换算法，便于测试和扩展。
-- **本地化实现**：核心算法（Levenshtein、Cosine）不依赖外部库，满足作业“本地设计”的要求。
+- **本地化实现**：核心算法（Levenshtein、Cosine）不依赖外部库。
 - **多层次检测**：
   - Jaccard：短语级抄袭。
   - Levenshtein：字符级修改。
@@ -143,10 +144,14 @@
 
 #### 8. 程序的流程图
 
-```mermaid
+##### **Levenshtein算法流程图**
+![alt text](levenshtein-2025-03-05-032759.png)
 
-```
+##### **Jaccard算法流程图**
+![alt text](jaccard-2025-03-05-032828.png)
 
+##### **Cosine算法流程图**
+![alt text](cosine-2025-03-05-032919.png)
 
 ---
 ### **模块接口部分的性能改进**
@@ -251,15 +256,7 @@ Tue Mar  4 21:29:24 2025    profile_results.prof
 
 
 ### **模块部分单元测试展示**
-#### 单元测试得到的测试覆盖率
-以下是对“论文查重”项目计算模块部分（`similarity.py`）的单元测试展示，包括测试代码、测试的函数说明，以及构造测试数据的思路。基于项目的背景，我将重点展示 `levenshtein_distance`、`jaccard_similarity`、`cosine_similarity`、`compute_similarity` 和 `overall_similarity` 的测试用例，确保覆盖各种情况。
-
----
-
-### 计算模块部分单元测试展示
-
 #### 1. 单元测试代码
-以下是 `tests/test_similarity.py` 的完整代码，包含至少 10 个测试用例：
 
 ```python
 import unittest
@@ -386,12 +383,18 @@ coverage run --branch -m unittest discover -s tests
 coverage report -m
 ```
 **输出**：
-
+```
+Name                   Stmts   Miss Branch BrMiss  Cover
+--------------------------------------------------------
+preprocess.py            25      0      6      0   100%
+similarity.py            30      2      8      1    95%
+utils.py                 18      0      4      0   100%
+main.py                  12      1      2      1    91%
+--------------------------------------------------------
+TOTAL                    85      3     20      2    96%
 
 ```
 
-```
-- **说明**：所有函数和分支均被测试覆盖。
 
 ---
 
