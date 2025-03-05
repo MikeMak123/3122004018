@@ -2,10 +2,19 @@
 
 ---
 # 【作业】软件工程作业2
+## 作业信息
+
+|       信息             |      链接       |
+| :----------------------: | :----------------------: |
+|  作业要求               |   <a href="https://edu.cnblogs.com/campus/gdgy/SoftwareEngineeringClassof2023/homework/13324">作业链接</a>                   |
+|  所属课程     |    <a href="https://edu.cnblogs.com/campus/gdgy/SoftwareEngineeringClassof2023">班级链接</a>              |
+|  GitHub仓库  |   <a href="https://github.com/MikeMak123/3122004018">仓库链接</a>                  |
+| 作业目标 | 1、开发论文查重系统 2、熟悉GitHub的使用 |
+
 
 ---
 
-## PSP2.1
+## **PSP2.1**
 ---
 
 | PSP2.1                                    | Personal Software Process Stages | 预估耗时（分钟） | 实际耗时（分钟） |
