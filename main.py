@@ -3,7 +3,7 @@ from similarity import compute_similarity
 from utils import parse_args, write_result, get_local_path
 import sys
 
-print('\n', r"快速开始: 执行此命令以运行程序： python main.py 'test_data\orig.txt' 'test_data\orig_add.txt' 'test_data\ans.txt'" ,'\n')
+print('\n', r"快速开始: 执行此命令以运行程序： python main.py 'test_data\orig.txt' 'test_data\orig_0.8_dis_10.txt' 'test_data\ans.txt'" ,'\n')
 
 def parse_args():
     """ 解析命令行参数 """
@@ -16,11 +16,11 @@ def parse_args():
 def main():
     orig_file, plagiarized_file, output_file = parse_args()
 
-    # 运行命令： python main.py 'test_data\orig.txt' 'test_data\orig_add.txt' 'test_data\ans.txt' 
+    # 运行命令： python main.py 'test_data\orig.txt' 'test_data\orig_0.8_dis_10.txt' 'test_data\ans.txt'
 
     # 论文文件名（假设默认文件名）
     # orig_file = get_local_path(r"test_data\orig.txt")
-    # plagiarized_file = get_local_path(r"test_data\orig_add.txt")
+    # plagiarized_file = get_local_path(r"test_data\orig_0.8_dis_10.txt")
     # output_file = get_local_path(r"test_data\ans.txt")
 
     # 预处理
