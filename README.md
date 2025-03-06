@@ -38,7 +38,42 @@
 
 ---   
 ## **程序说明**
-   
+
+
+### 文档结构
+```shell
+
+ 3122004018
+    │  cosine-2025-03-05-032919.png
+    │  jaccard-2025-03-05-032828.png
+    │  levenshtein-2025-03-05-032759.png
+    │  LICENSE
+    │  main.py
+    │  preprocess.py
+    │  profile_results.prof
+    │  README.md
+    │  requirements.txt
+    │  similarity.py
+    │  utils.py
+    │
+    ├─test_data
+    │      ans.txt
+    │      orig.txt
+    │      orig_add.txt
+    │      unrelated.txt
+    │
+    └─uni_test
+           test_large_data.py
+           test_main.py
+           test_precision.py
+           test_preprocess.py
+           test_quality.py
+           test_similarity.py
+           test_utils.py
+     
+```
+
+
 ### **模块接口的设计与实现过程**
 #### 1. 设计目标
 计算模块是论文查重系统的核心，负责比较两篇论文的文本并输出重复率。设计目标包括：
@@ -154,15 +189,94 @@
 #### 8. 程序的流程图
 
 ##### **Levenshtein算法流程图**
-![alt text](levenshtein-2025-03-05-032759.png)
+```mermaid
+
+flowchart TD
+    A[Start] --> B[Input s1 and s2]
+    B --> C[Get lengths of s1 and s2]
+    C --> D[Initialize dp array]
+    D --> E[Fill first row]
+    E --> F[Fill first column]
+    F --> G[Loop i from 1 to len_s1]
+    G --> H[Loop j from 1 to len_s2]
+    H --> I{Is s1 at i-1 equal to s2 at j-1 ?}
+    I -->|Yes| J[Set dp at i,j to dp at i-1,j-1]
+    I -->|No| K[Set dp at i,j to min plus 1]
+    J --> L[Continue loop]
+    K --> L
+    L --> M[Return dp at len_s1,len_s2]
+    M --> N[End]
+
+    %% 添加颜色
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#f66,stroke-width:2px
+    style C fill:#dfd,stroke:#0a0,stroke-width:2px
+    style D fill:#ffb,stroke:#ff0,stroke-width:2px
+    style E fill:#bdf,stroke:#00f,stroke-width:2px
+    style F fill:#ffb,stroke:#ff0,stroke-width:2px
+    style G fill:#dfd,stroke:#0a0,stroke-width:2px
+    style H fill:#bdf,stroke:#00f,stroke-width:2px
+    style I fill:#fdd,stroke:#f00,stroke-width:2px
+    style J fill:#dfd,stroke:#0a0,stroke-width:2px
+    style K fill:#ffb,stroke:#ff0,stroke-width:2px
+    style L fill:#bdf,stroke:#00f,stroke-width:2px
+    style M fill:#bbf,stroke:#f66,stroke-width:2px
+    style N fill:#f9f,stroke:#333,stroke-width:2px
+
+```
 
 ##### **Jaccard算法流程图**
-![alt text](jaccard-2025-03-05-032828.png)
+```mermaid
+flowchart TD
+    A[Start] --> B[Input set1 and set2]
+    B --> C[Calculate intersection]
+    C --> D[Calculate union]
+    D --> E{Is union zero ?}
+    E -->|Yes| F[Return 0.0]
+    E -->|No| G[Return intersection over union]
+    F --> H[End]
+    G --> H
 
+    %% 添加颜色
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#f66,stroke-width:2px
+    style C fill:#dfd,stroke:#0a0,stroke-width:2px
+    style D fill:#ffb,stroke:#ff0,stroke-width:2px
+    style E fill:#fdd,stroke:#f00,stroke-width:2px
+    style F fill:#bdf,stroke:#00f,stroke-width:2px
+    style G fill:#dfd,stroke:#0a0,stroke-width:2px
+    style H fill:#f9f,stroke:#333,stroke-width:2px
+
+```
 ##### **Cosine算法流程图**
-![alt text](cosine-2025-03-05-032919.png)
+```mermaid
+flowchart TD
+    A[Start] --> B[Input vec1 and vec2]
+    B --> C[Calculate dot product]
+    C --> D[Calculate magnitude1]
+    D --> E[Calculate magnitude2]
+    E --> F{Is magnitude1 or magnitude2 zero ?}
+    F -->|Yes| G[Return 0.0]
+    F -->|No| H[Return dot product over magnitudes]
+    G --> I[End]
+    H --> I
+
+    %% 添加颜色
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#f66,stroke-width:2px
+    style C fill:#dfd,stroke:#0a0,stroke-width:2px
+    style D fill:#ffb,stroke:#ff0,stroke-width:2px
+    style E fill:#bdf,stroke:#00f,stroke-width:2px
+    style F fill:#fdd,stroke:#f00,stroke-width:2px
+    style G fill:#dfd,stroke:#0a0,stroke-width:2px
+    style H fill:#ffb,stroke:#ff0,stroke-width:2px
+    style I fill:#f9f,stroke:#333,stroke-width:2px
+
+```
 
 ---
+
+
 ### **模块接口部分的性能改进**
 
 
@@ -265,69 +379,7 @@ Tue Mar  4 21:29:24 2025    profile_results.prof
 
 
 ### **模块部分单元测试展示**
-#### 1. 单元测试代码
-
-```python
-import unittest
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from similarity import (levenshtein_distance, jaccard_similarity, cosine_similarity,
-                       compute_similarity, overall_similarity)
-from collections import Counter
-
-
-class TestSimilarity(unittest.TestCase):
-    def test_n_gram(self):
-        tokens = ["今天", "天气", "晴朗"]
-        ngram_set = n_gram_split(tokens, 2)
-        self.assertIn("今天天气", ngram_set)
-        self.assertIn("天气晴朗", ngram_set)
-
-    def test_levenshtein_distance(self):
-        self.assertEqual(levenshtein_distance("kitten", "sitting"), 3)
-        self.assertEqual(levenshtein_distance("hello", "hello"), 0)
-        self.assertEqual(levenshtein_distance("", ""), 0)  # 空字符串
-        self.assertEqual(levenshtein_distance("a", ""), 1)  # 删除一个字符
-        self.assertEqual(levenshtein_distance("", "a"), 1)  # 插入一个字符
-        self.assertEqual(levenshtein_distance("ab", "ba"), 2)  # 交换字符
-    
-    def test_jaccard_similarity(self):
-        set1 = n_gram_split(["abc", "def", "ghi"], 2)  # 生成 {"abcdef", "defghi"}
-        set2 = n_gram_split(["abc", "def", "xyz"], 2)  # 生成 {"abcdef", "defxyz"}
-        self.assertAlmostEqual(jaccard_similarity(set1, set2), 1/3)
-        
-        # 额外测试
-        self.assertEqual(jaccard_similarity(set(), set()), 0)  # 空集
-        self.assertEqual(jaccard_similarity({"a", "b"}, {"a", "b"}), 1.0)  # 完全相同
-        self.assertEqual(jaccard_similarity({"a", "b"}, {"c", "d"}), 0.0)  # 完全不同
-
-    def test_jaccard_similarity(self):
-        set1 = {"今天天气", "天气晴朗", "晴朗很好"}
-        set2 = {"天气晴朗", "晴朗很好", "很好真好"}
-        self.assertAlmostEqual(compute_similarity(set1, set2, "jaccard"), 1/2)
-    
-    def test_cosine_similarity(self):
-        vec1, vec2 = {"a": 1, "b": 1}, {"a": 1, "c": 1}
-        self.assertAlmostEqual(cosine_similarity(vec1, vec2), 0.5)
-        
-    def test_compute_similarity(self):
-        set1 = n_gram_split(["abc", "def", "ghi"], 2)
-        set2 = n_gram_split(["abc", "def", "xyz"], 2)
-        self.assertAlmostEqual(compute_similarity(set1, set2, "jaccard"), 1/3)
-        
-        # 测试异常输入
-        self.assertRaises(ValueError, compute_similarity, set1, set2, "invalid_method")  # 错误方法名
-    
-
-if __name__ == "__main__":
-    unittest.main()
-
-```
-
----
-
-#### 2. 测试的函数说明
+#### 1. 测试的函数说明
 以下是测试覆盖的函数及其目标：
 1. **`levenshtein_distance(s1, s2)`**：
    - **功能**：计算两个序列的编辑距离。
@@ -351,7 +403,7 @@ if __name__ == "__main__":
 
 ---
 
-#### 3. 构造测试数据的思路
+#### 2. 构造测试数据的思路
 ##### (1) 正常输入
 - **目的**：验证算法在常见场景下的正确性。
 - **数据构造**：
@@ -385,7 +437,7 @@ if __name__ == "__main__":
 
 ---
 
-#### 4. 测试覆盖率截图
+#### 3. 测试覆盖率截图
 运行以下命令查看覆盖率：
 ```bash
 coverage run --branch -m unittest discover -s tests
@@ -407,7 +459,7 @@ TOTAL                    85      3     20      2    96%
 
 ---
 
-#### 5. 结论
+#### 4. 结论
 - **测试代码**：展示了 14 个用例，覆盖了 `similarity.py` 的所有核心函数。
 - **测试函数**：全面验证了算法的正确性、边界行为和异常处理。
 - **数据构造**：从正常、边界、异常三个维度设计，确保鲁棒性和准确性。
@@ -424,21 +476,6 @@ TOTAL                    85      3     20      2    96%
 - **目的**：防止用户传入不支持的 `method` 参数到 `compute_similarity` 函数，确保算法选择合法。
 - **场景**：当用户传入 `"jaccard"`、`"levenshtein"`、`"cosine"` 以外的方法时，抛出异常以提示输入错误。
 - **处理方式**：在 `compute_similarity` 中检查 `method` 参数，若不在支持列表中，则抛出 `ValueError`，附带清晰的错误信息。
-
-##### 实现代码
-```python
-def compute_similarity(text1, text2, method="jaccard"):
-    if method == "jaccard":
-        return jaccard_similarity(set(text1), set(text2))
-    elif method == "levenshtein":
-        max_len = max(len(text1), len(text2))
-        return 1 - levenshtein_distance(text1, text2) / max_len if max_len else 1.0
-    elif method == "cosine":
-        vec1, vec2 = Counter(text1), Counter(text2)
-        return cosine_similarity(vec1, vec2)
-    else:
-        raise ValueError(f"未知的相似度方法: {method}")
-```
 
 ##### 单元测试样例
 ```python
@@ -459,15 +496,6 @@ def test_compute_similarity_invalid_method(self):
 - **场景**：当传入非可迭代对象（如整数、None）时，抛出异常以防止后续操作崩溃。
 - **处理方式**：在函数入口添加类型检查，若类型不符则抛出 `TypeError`。
 
-##### 实现代码（改进）
-```python
-def compute_similarity(text1, text2, method="jaccard"):
-    if not (hasattr(text1, "__iter__") and hasattr(text2, "__iter__")):
-        raise TypeError("输入必须是可迭代对象（如列表或字符串）")
-    if method == "jaccard":
-        return jaccard_similarity(set(text1), set(text2))
-    # 其他方法...
-```
 
 ##### 单元测试样例
 ```python
@@ -488,18 +516,6 @@ def test_compute_similarity_type_error(self):
 - **场景**：当 `text1` 和 `text2` 均为长度 0 时，避免除以 `max_len=0`。
 - **处理方式**：在 Levenshtein 分支中提前检查 `max_len`，返回默认值 1.0（完全相似）。
 
-##### 实现代码
-```python
-def compute_similarity(text1, text2, method="jaccard"):
-    # 类型检查...
-    if method == "levenshtein":
-        max_len = max(len(text1), len(text2))
-        if max_len == 0:  # 避免除零
-            return 1.0
-        return 1 - levenshtein_distance(text1, text2) / max_len
-    # 其他方法...
-```
-
 ##### 单元测试样例
 ```python
 def test_compute_similarity_levenshtein_empty(self):
@@ -518,14 +534,6 @@ def test_compute_similarity_levenshtein_empty(self):
 - **场景**：当输入 token 列表过长时，限制计算规模并抛出异常。
 - **处理方式**：在函数入口检查输入长度，若超过阈值（如 10^6 tokens），抛出 `MemoryError`。
 
-##### 实现代码（改进）
-```python
-def compute_similarity(text1, text2, method="jaccard"):
-    MAX_TOKENS = 1000000  # 假设 10^6 tokens 为上限
-    if len(text1) > MAX_TOKENS or len(text2) > MAX_TOKENS:
-        raise MemoryError("输入文本过大，超出内存限制")
-    # 类型检查和计算...
-```
 
 ##### 单元测试样例
 ```python
